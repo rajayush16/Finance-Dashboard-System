@@ -8,6 +8,7 @@ import { notFound } from "./middlewares/not-found";
 import { sendSuccess } from "./utils/response";
 import { registerSwagger } from "./config/swagger";
 import { authRouter } from "./modules/auth/auth.routes";
+import { usersRouter } from "./modules/users/users.routes";
 
 export const createApp = (): express.Express => {
   const app = express();
@@ -31,6 +32,7 @@ export const createApp = (): express.Express => {
   });
 
   app.use(`${API_PREFIX}/auth`, authRouter);
+  app.use(`${API_PREFIX}/users`, usersRouter);
 
   registerSwagger(app);
 

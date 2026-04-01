@@ -1,4 +1,4 @@
-import { and, count, eq, ilike, ne, sql } from "drizzle-orm";
+import { and, count, eq, ilike, ne, or, sql } from "drizzle-orm";
 import { db } from "../../config/db";
 import { users, type NewUser } from "../../db/schema/users";
 import type { Role, UserStatus } from "../../constants/roles";
@@ -67,7 +67,7 @@ export class UsersRepository {
     }
 
     if (filters.search) {
-      conditions.push(ilike(users.email, `%${filters.search}%`));
+      conditions.push(or(ilike(users.email, `%${filters.search}%`), ilike(users.name, `%${filters.search}%`))!);
     }
 
     const whereClause = conditions.length > 0 ? and(...conditions) : undefined;
