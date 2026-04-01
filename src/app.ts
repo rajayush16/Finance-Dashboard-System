@@ -11,6 +11,7 @@ import { authRouter } from "./modules/auth/auth.routes";
 import { usersRouter } from "./modules/users/users.routes";
 import { recordsRouter } from "./modules/records/records.routes";
 import { auditRouter } from "./modules/audit/audit.routes";
+import { dashboardRouter } from "./modules/dashboard/dashboard.routes";
 
 export const createApp = (): express.Express => {
   const app = express();
@@ -36,6 +37,7 @@ export const createApp = (): express.Express => {
   app.use(`${API_PREFIX}/auth`, authRouter);
   app.use(`${API_PREFIX}/users`, usersRouter);
   app.use(`${API_PREFIX}/records`, recordsRouter);
+  app.use(`${API_PREFIX}/dashboard`, dashboardRouter);
   app.use(`${API_PREFIX}/audit-logs`, auditRouter);
 
   registerSwagger(app);

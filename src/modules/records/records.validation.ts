@@ -1,8 +1,9 @@
 import { z } from "zod";
+import { toISODateString } from "../../utils/date";
 
 const dateString = z.coerce
   .date()
-  .transform((value) => value.toISOString().split("T")[0]);
+  .transform(toISODateString);
 
 export const recordIdParamsSchema = z.object({
   id: z.string().uuid("Record id must be a valid UUID.")

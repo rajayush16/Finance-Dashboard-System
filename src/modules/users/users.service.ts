@@ -68,7 +68,7 @@ export class UsersService {
     return sanitizeUser(user);
   }
 
-  async createUser(input: CreateUserInput) {
+  async createUser(actor: AuthenticatedUser, input: CreateUserInput) {
     const existingUser = await usersRepository.findByEmail(input.email);
 
     if (existingUser) {
@@ -85,7 +85,7 @@ export class UsersService {
     });
 
     await auditService.log({
-      actorUserId: createdUser.id,
+      actorUserId: actor.id,
       entityType: "user",
       entityId: createdUser.id,
       action: "create",

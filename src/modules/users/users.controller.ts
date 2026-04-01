@@ -21,7 +21,11 @@ export const getUserById = asyncHandler(async (req: Request, res: Response) => {
 });
 
 export const createUser = asyncHandler(async (req: Request, res: Response) => {
-  const user = await usersService.createUser(req.body);
+  if (!req.user) {
+    throw new AppError(401, "UNAUTHORIZED", "Authentication is required.");
+  }
+
+  const user = await usersService.createUser(req.user, req.body);
 
   sendSuccess(res, 201, user, "User created successfully.");
 });
