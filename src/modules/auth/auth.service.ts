@@ -2,6 +2,7 @@ import { usersRepository } from "../users/users.repository";
 import { AppError } from "../../utils/app-error";
 import { comparePassword } from "../../utils/password";
 import { signAccessToken } from "../../utils/jwt";
+import { auditService } from "../audit/audit.service";
 
 export interface LoginInput {
   email: string;
@@ -31,6 +32,16 @@ export class AuthService {
       email: user.email,
       role: user.role,
       status: user.status
+    });
+
+    await auditService.log({
+      actorUserId: user.id,
+      entityType: "user",
+      entityId: user.id,
+      action: "login",
+      metadata: {
+        role: user.role
+      }
     });
 
     return {

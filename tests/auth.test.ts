@@ -10,6 +10,12 @@ jest.mock("../src/modules/users/users.repository", () => ({
   }
 }));
 
+jest.mock("../src/modules/audit/audit.service", () => ({
+  auditService: {
+    log: jest.fn()
+  }
+}));
+
 const app = createApp();
 
 describe("Auth routes", () => {

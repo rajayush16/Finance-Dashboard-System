@@ -4,6 +4,7 @@ import { AppError } from "../../utils/app-error";
 import { createPaginationMeta } from "../../utils/pagination";
 import { hashPassword } from "../../utils/password";
 import type { Role, UserStatus } from "../../constants/roles";
+import { auditService } from "../audit/audit.service";
 
 interface CreateUserInput {
   name: string;
@@ -83,6 +84,17 @@ export class UsersService {
       status: input.status
     });
 
+    await auditService.log({
+      actorUserId: createdUser.id,
+      entityType: "user",
+      entityId: createdUser.id,
+      action: "create",
+      metadata: {
+        role: createdUser.role,
+        status: createdUser.status
+      }
+    });
+
     return sanitizeUser(createdUser);
   }
 
@@ -115,6 +127,23 @@ export class UsersService {
     if (!updatedUser) {
       throw new AppError(404, "NOT_FOUND", "User not found.");
     }
+
+    const auditAction =
+      input.status && input.status !== existingUser.status
+        ? "status_change"
+        : input.role && input.role !== existingUser.role
+          ? "role_change"
+          : "update";
+
+    await auditService.log({
+      actorUserId: actor.id,
+      entityType: "user",
+      entityId: updatedUser.id,
+      action: auditAction,
+      metadata: {
+        changes: input
+      }
+    });
 
     return sanitizeUser(updatedUser);
   }
