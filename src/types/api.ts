@@ -1,3 +1,5 @@
+import type { Role, UserStatus } from "../constants/roles";
+
 export interface PaginationMeta {
   page: number;
   limit: number;
@@ -24,6 +26,6 @@ export interface ApiErrorResponse {
 export interface AuthenticatedUser {
   id: string;
   email: string;
-  role: string;
-  status: string;
+  role: Role;
+  status: UserStatus;
 }

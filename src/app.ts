@@ -7,6 +7,7 @@ import { errorHandler } from "./middlewares/error-handler";
 import { notFound } from "./middlewares/not-found";
 import { sendSuccess } from "./utils/response";
 import { registerSwagger } from "./config/swagger";
+import { authRouter } from "./modules/auth/auth.routes";
 
 export const createApp = (): express.Express => {
   const app = express();
@@ -28,6 +29,8 @@ export const createApp = (): express.Express => {
       service: "finance-dashboard-backend"
     });
   });
+
+  app.use(`${API_PREFIX}/auth`, authRouter);
 
   registerSwagger(app);
 
