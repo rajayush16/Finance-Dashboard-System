@@ -224,14 +224,14 @@ This repo now includes a `render.yaml` blueprint for Render.
 - one Render Postgres database
 - automatic `DATABASE_URL` wiring from the database to the app
 - a pre-deploy migration step using `npm run db:migrate`
+- free-tier plans for both the API service and database
 
 ### Deploy Steps
 
 1. Push this repository to GitHub.
 2. In Render, open **Blueprints** and create a new blueprint instance from this repo.
 3. Review the generated web service and database names.
-4. When prompted, set `CORS_ORIGIN` to `*` if this API is public, or set it to a specific origin if another app will call it.
-5. Finish the setup and wait for the first deploy.
+4. Finish the setup and wait for the first deploy.
 
 ### After Deploy
 
@@ -239,12 +239,18 @@ This repo now includes a `render.yaml` blueprint for Render.
 - Swagger docs: `/docs`
 - API base: `/api/v1`
 
+### Free Tier Limits
+
+- the free web service spins down after 15 minutes of inactivity
+- the free database expires 30 days after creation unless you upgrade it
+- free web services do not include Render Shell access
+
 ### Optional Seed Data
 
-If you want the demo users and sample records in production, open the Render Shell for the web service and run:
+Because free web services do not include Render Shell access, seed from your local machine using the Render database's external connection string:
 
 ```bash
-npm run db:seed
+$env:DATABASE_URL="your-render-external-db-url"; npm run db:seed
 ```
 
 Seeded users:

@@ -2,6 +2,7 @@ services:
   - type: web
     name: finance-dashboard-backend
     runtime: node
+    plan: free
     buildCommand: npm ci && npm run build
     preDeployCommand: npm run db:migrate
     startCommand: npm start
@@ -20,11 +21,12 @@ services:
       - key: BCRYPT_SALT_ROUNDS
         value: "10"
       - key: CORS_ORIGIN
-        sync: false
+        value: "*"
       - key: SWAGGER_ENABLED
         value: "true"
 
 databases:
   - name: finance-dashboard-db
+    plan: free
     databaseName: finance_dashboard
     user: finance_dashboard_user
