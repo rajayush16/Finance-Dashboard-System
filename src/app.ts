@@ -3,6 +3,7 @@ import express from "express";
 import helmet from "helmet";
 import morgan from "morgan";
 import { API_PREFIX } from "./constants/api";
+import { env } from "./config/env";
 import { errorHandler } from "./middlewares/error-handler";
 import { notFound } from "./middlewares/not-found";
 import { sendSuccess } from "./utils/response";
@@ -15,9 +16,17 @@ import { dashboardRouter } from "./modules/dashboard/dashboard.routes";
 
 export const createApp = (): express.Express => {
   const app = express();
+  const allowedOrigins =
+    env.CORS_ORIGIN === "*"
+      ? true
+      : env.CORS_ORIGIN.split(",").map((origin) => origin.trim());
 
   app.use(helmet());
-  app.use(cors());
+  app.use(
+    cors({
+      origin: allowedOrigins
+    })
+  );
   app.use(express.json());
   app.use(morgan("dev"));
 

@@ -1,6 +1,6 @@
 # Finance Dashboard Backend
 
-Backend assignment submission for a finance dashboard system with JWT authentication, RBAC, financial record CRUD, dashboard analytics, audit logging, Swagger docs, and Jest/Supertest coverage.
+Backend project for a finance dashboard system with JWT authentication, RBAC, financial record CRUD, dashboard analytics, audit logging, Swagger docs, and Jest/Supertest coverage.
 
 ## Why This Architecture
 
@@ -213,6 +213,45 @@ npm run dev
 npm run build
 npm run start
 ```
+
+## Deploy On Render
+
+This repo now includes a `render.yaml` blueprint for Render.
+
+### What It Creates
+
+- one Node web service
+- one Render Postgres database
+- automatic `DATABASE_URL` wiring from the database to the app
+- a pre-deploy migration step using `npm run db:migrate`
+
+### Deploy Steps
+
+1. Push this repository to GitHub.
+2. In Render, open **Blueprints** and create a new blueprint instance from this repo.
+3. Review the generated web service and database names.
+4. When prompted, set `CORS_ORIGIN` to `*` if this API is public, or set it to a specific origin if another app will call it.
+5. Finish the setup and wait for the first deploy.
+
+### After Deploy
+
+- Health check: `/health`
+- Swagger docs: `/docs`
+- API base: `/api/v1`
+
+### Optional Seed Data
+
+If you want the demo users and sample records in production, open the Render Shell for the web service and run:
+
+```bash
+npm run db:seed
+```
+
+Seeded users:
+
+- `admin@finance.local` / `Admin@123`
+- `analyst@finance.local` / `Admin@123`
+- `viewer@finance.local` / `Admin@123`
 
 ## Migration Commands
 
